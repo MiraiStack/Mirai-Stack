@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Mirai Stack | Scalable Digital Infrastructure",
+    title: "Mirai Stack",
     description: "Mirai Stack designs and engineers scalable SaaS platforms, automation systems, and digital infrastructure built for the next generation of organizations.",
 };
 
