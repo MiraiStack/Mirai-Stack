@@ -60,7 +60,7 @@ export async function POST(request: Request) {
             from: "Mirai Stack <no-reply@mail.miraistack.co.za>",
             to: ["info@miraistack.co.za"],
             subject: `New Mirai Stack Contact: ${subject || "Website Message"}`,
-            reply_to: email, // Direct reply to sender
+            replyTo: email, // Direct reply to sender
             html: `
                 <h3>New Contact Request</h3>
                 <p><strong>Name:</strong> ${name}</p>
