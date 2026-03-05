@@ -82,9 +82,7 @@ export async function POST(request: Request) {
         });
 
         // Resend throws on error sometimes, but keep your guard:
-        // @ts-expect-error - Resend response shape varies by version
         if (data?.error) {
-            // @ts-expect-error
             console.error("Resend Error:", data.error);
             return NextResponse.json(
                 { success: false, error: "Failed to send the email. Please try again later." },
