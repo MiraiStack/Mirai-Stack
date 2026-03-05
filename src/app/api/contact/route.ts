@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         // 3. Send email
         const data = await resend.emails.send({
             from: "Mirai Stack <no-reply@mail.miraistack.co.za>",
-            to: ["info@miraistack.co.za"],
+            to: ["marssmdlalose@gmail.com"],
             subject: `New Mirai Stack Contact: ${subject || "Website Message"}`,
             replyTo: email,
             html: `
