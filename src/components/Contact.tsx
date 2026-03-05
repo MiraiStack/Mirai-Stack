@@ -6,10 +6,14 @@ import TiltCard from "./TiltCard";
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setStatus("idle");
+        setErrorMessage("");
 
         const formData = new FormData(e.currentTarget);
         const data = {
@@ -29,13 +33,15 @@ export default function Contact() {
             const json = await res.json();
 
             if (json.success) {
-                alert("Message sent successfully!");
+                setStatus("success");
                 e.currentTarget.reset();
             } else {
-                alert(json.error || "Failed to send message.");
+                setStatus("error");
+                setErrorMessage(json.error || "Something went wrong. Please try again in a moment.");
             }
         } catch (err) {
-            alert("A network error occurred. Please try again.");
+            setStatus("error");
+            setErrorMessage("Something went wrong. Please try again in a moment.");
         } finally {
             setIsSubmitting(false);
         }
@@ -151,6 +157,18 @@ export default function Contact() {
                                         className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all resize-none custom-scrollbar"
                                     />
                                 </div>
+
+                                {status === "success" && (
+                                    <div className="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan relative z-10">
+                                        <p className="text-sm font-medium leading-relaxed">✓ Message sent. We’ll get back to you shortly.</p>
+                                    </div>
+                                )}
+
+                                {status === "error" && (
+                                    <div className="p-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 relative z-10">
+                                        <p className="text-sm font-medium leading-relaxed">{errorMessage}</p>
+                                    </div>
+                                )}
 
                                 <button
                                     type="submit"
