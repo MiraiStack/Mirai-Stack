@@ -1,15 +1,24 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const runtime = "nodejs";
 
 // Simple rate-limiting utilizing an in-memory Map
 // NOTE: This will NOT persist across serverless function invocations (e.g. on Vercel)
-// For robust rate-limiting, use Vercel KV or Upstash Redis.
 const rateLimitCache = new Map<string, number>();
 
 export async function POST(request: Request) {
     try {
+        // ✅ Instantiate Resend at runtime (NOT at build time)
+        const apiKey = process.env.RESEND_API_KEY;
+        if (!apiKey) {
+            return NextResponse.json(
+                { success: false, error: "Missing RESEND_API_KEY on server." },
+                { status: 500 }
+            );
+        }
+        const resend = new Resend(apiKey);
+
         const ip = request.headers.get("x-forwarded-for") || "unknown_ip";
         const now = Date.now();
         const requestTime = rateLimitCache.get(ip);
@@ -27,7 +36,7 @@ export async function POST(request: Request) {
         const { name, email, subject, message, companyWebsite } = body;
 
         // 1. Honeypot check
-        if (companyWebsite && companyWebsite.trim() !== "") {
+        if (companyWebsite && String(companyWebsite).trim() !== "") {
             // Silently discard bot submission
             return NextResponse.json({ success: true, message: "Message sent." });
         }
@@ -48,7 +57,7 @@ export async function POST(request: Request) {
             );
         }
 
-        if (message.trim().length < 10) {
+        if (String(message).trim().length < 10) {
             return NextResponse.json(
                 { success: false, error: "Message must be at least 10 characters." },
                 { status: 400 }
@@ -60,19 +69,22 @@ export async function POST(request: Request) {
             from: "Mirai Stack <no-reply@mail.miraistack.co.za>",
             to: ["info@miraistack.co.za"],
             subject: `New Mirai Stack Contact: ${subject || "Website Message"}`,
-            replyTo: email, // Direct reply to sender
+            replyTo: email,
             html: `
-                <h3>New Contact Request</h3>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Subject / Company:</strong> ${subject || "N/A"}</p>
-                <br />
-                <p><strong>Message:</strong></p>
-                <p>${message.replace(/\n/g, "<br/>")}</p>
-            `,
+        <h3>New Contact Request</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject / Company:</strong> ${subject || "N/A"}</p>
+        <br />
+        <p><strong>Message:</strong></p>
+        <p>${String(message).replace(/\n/g, "<br/>")}</p>
+      `,
         });
 
-        if (data.error) {
+        // Resend throws on error sometimes, but keep your guard:
+        // @ts-expect-error - Resend response shape varies by version
+        if (data?.error) {
+            // @ts-expect-error
             console.error("Resend Error:", data.error);
             return NextResponse.json(
                 { success: false, error: "Failed to send the email. Please try again later." },
@@ -81,7 +93,6 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json({ success: true, message: "Email sent successfully!" });
-
     } catch (error) {
         console.error("API Error:", error);
         return NextResponse.json(
