@@ -1,9 +1,45 @@
 "use client";
 
+import { useState } from "react";
 import { Github, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 import TiltCard from "./TiltCard";
 
 export default function Contact() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const formData = new FormData(e.currentTarget);
+        const data = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            subject: formData.get("company"),
+            message: formData.get("project"),
+            companyWebsite: formData.get("companyWebsite")
+        };
+
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const json = await res.json();
+
+            if (json.success) {
+                alert("Message sent successfully!");
+                e.currentTarget.reset();
+            } else {
+                alert(json.error || "Failed to send message.");
+            }
+        } catch (err) {
+            alert("A network error occurred. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
     return (
         <section id="contact" className="py-32 px-6 bg-brand-dark border-t border-brand-border text-white relative">
             <div className="absolute left-0 bottom-0 w-[600px] h-[600px] bg-brand-cyan/5 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 translate-y-1/2" />
@@ -59,7 +95,8 @@ export default function Contact() {
                     {/* Right: Form Form */}
                     <div className="lg:w-7/12 perspective-[1000px]">
                         <TiltCard className="p-[1px] rounded-[2.5rem] bg-gradient-to-br from-brand-border/80 via-transparent to-brand-border/30 h-full overflow-hidden shadow-2xl shadow-black/80">
-                            <form className="relative flex flex-col gap-6 bg-brand-surface/95 backdrop-blur-3xl p-10 md:p-14 rounded-[2.5rem] h-full overflow-hidden">
+                            <form onSubmit={handleSubmit} className="relative flex flex-col gap-6 bg-brand-surface/95 backdrop-blur-3xl p-10 md:p-14 rounded-[2.5rem] h-full overflow-hidden">
+                                <input type="text" name="companyWebsite" className="hidden" aria-hidden="true" tabIndex={-1} autoComplete="off" />
                                 {/* Soft glow behind form */}
                                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
@@ -72,6 +109,8 @@ export default function Contact() {
                                         <input
                                             type="text"
                                             id="name"
+                                            name="name"
+                                            required
                                             placeholder="Jane Doe"
                                             className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
                                         />
@@ -81,6 +120,7 @@ export default function Contact() {
                                         <input
                                             type="text"
                                             id="company"
+                                            name="company"
                                             placeholder="Acme Corp"
                                             className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
                                         />
@@ -92,6 +132,8 @@ export default function Contact() {
                                     <input
                                         type="email"
                                         id="email"
+                                        name="email"
+                                        required
                                         placeholder="jane@company.com"
                                         className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
                                     />
@@ -101,18 +143,22 @@ export default function Contact() {
                                     <label htmlFor="project" className="text-xs font-semibold text-neutral-500 uppercase tracking-wider pl-1">Project Details</label>
                                     <textarea
                                         id="project"
+                                        name="project"
                                         rows={4}
+                                        required
+                                        minLength={10}
                                         placeholder="Tell us about your objectives, timeline, or technology stack..."
                                         className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all resize-none custom-scrollbar"
                                     />
                                 </div>
 
                                 <button
-                                    type="button"
-                                    className="group mt-auto w-full flex items-center justify-center gap-3 bg-white text-brand-dark hover:bg-brand-cyan font-bold text-lg rounded-xl py-5 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(68,207,213,0.3)] relative z-10"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="group mt-auto w-full flex items-center justify-center gap-3 bg-white text-brand-dark hover:bg-brand-cyan font-bold text-lg rounded-xl py-5 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(68,207,213,0.3)] disabled:opacity-70 relative z-10"
                                 >
-                                    Submit Request
-                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    {isSubmitting ? "Sending..." : "Submit Request"}
+                                    {!isSubmitting && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
                                 </button>
                             </form>
                         </TiltCard>
