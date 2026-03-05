@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Environment Variables
+
+The project uses Sentry for error monitoring. When deploying, ensure the following environment variables are set either in your local `.env.local` or your Vercel project settings:
+
+- **`SENTRY_DSN`** (Required): Your project's Sentry DSN key (often starts with `https://...`)
+- **`NEXT_PUBLIC_SENTRY_DSN`** (Optional): Same as above if you want client-side reporting.
+- **`SENTRY_AUTH_TOKEN`** (Optional): Token used during the build phase for uploading source maps to Sentry.
