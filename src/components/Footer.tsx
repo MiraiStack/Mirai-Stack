@@ -22,8 +22,8 @@ export default function Footer() {
                 </p>
 
                 <div className="flex items-center gap-8 font-medium text-neutral-500">
-                    <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
-                    <Link href="#" className="hover:text-white transition-colors">Terms</Link>
+                    <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                    <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
                     <Link href="https://github.com/miraistack" target="_blank" className="hover:text-brand-cyan transition-colors">GitHub</Link>
                 </div>
             </div>

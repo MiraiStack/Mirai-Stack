@@ -23,7 +23,7 @@ const team: TeamMember[] = [
         name: "Nhlanhla Ngcobo",
         role: "Co-Founder | Director of Innovation & Product Strategy",
         bio: "Nhlanhla leads product innovation and strategic direction at Mirai Stack, driving the development of new digital platforms and technology initiatives. He focuses on identifying emerging opportunities, shaping product vision, and translating market insights into scalable platform concepts.\n\nWith a forward-thinking and research-driven approach, Nhlanhla guides product ideation, feature architecture, and long-term innovation strategy. His work ensures that Mirai Stack’s platforms are designed to align with evolving market demands while maintaining a clear path toward sustainable growth and technological advancement.",
-        image: "/nhlanhla.png",
+        image: "/nhlanhla-new.jpg",
     },
     {
         name: "Masibonge Mdlalose",
@@ -207,7 +207,7 @@ export default function Team() {
 
                                 <div className="flex items-center gap-4 mt-auto">
                                     <a
-                                        href={`mailto:hello@miraistack.com`}
+                                        href={`mailto:info@miraistack.co.za`}
                                         className="w-12 h-12 rounded-full border border-brand-border flex items-center justify-center text-neutral-400 hover:text-brand-dark hover:bg-brand-cyan hover:border-brand-cyan transition-all"
                                     >
                                         <Mail size={20} />

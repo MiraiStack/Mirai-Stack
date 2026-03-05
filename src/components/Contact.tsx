@@ -27,13 +27,13 @@ export default function Contact() {
                         <div className="flex flex-col gap-10">
                             {/* Contact Methods */}
                             <div className="flex flex-col gap-6">
-                                <a href="mailto:hello@miraistack.com" className="group flex items-center gap-6 p-4 rounded-2xl hover:bg-brand-surface border border-transparent hover:border-brand-border transition-all w-full">
+                                <a href="mailto:info@miraistack.co.za" className="group flex items-center gap-6 p-4 rounded-2xl hover:bg-brand-surface border border-transparent hover:border-brand-border transition-all w-full">
                                     <div className="w-14 h-14 rounded-full bg-brand-surface border border-brand-border flex items-center justify-center text-neutral-400 group-hover:bg-brand-cyan group-hover:text-brand-dark group-hover:border-brand-cyan transition-colors">
                                         <Mail size={22} />
                                     </div>
                                     <div>
                                         <p className="text-sm text-neutral-500 font-medium mb-1 uppercase tracking-wider">Email Us</p>
-                                        <p className="text-xl font-semibold text-neutral-200 group-hover:text-white transition-colors">hello@miraistack.com</p>
+                                        <p className="text-xl font-semibold text-neutral-200 group-hover:text-white transition-colors">info@miraistack.co.za</p>
                                     </div>
                                 </a>
 
@@ -48,9 +48,8 @@ export default function Contact() {
                                 </div>
                             </div>
 
-                            {/* Social Links */}
                             <div className="flex items-center gap-4 pl-4 pt-4 border-t border-brand-border w-fit">
-                                <a href="#" className="p-3 text-neutral-400 hover:text-white hover:bg-brand-surface border border-transparent hover:border-brand-border rounded-xl transition-all">
+                                <a href="https://github.com/miraistack" target="_blank" className="p-3 text-neutral-400 hover:text-white hover:bg-brand-surface border border-transparent hover:border-brand-border rounded-xl transition-all">
                                     <Github size={22} />
                                 </a>
                             </div>
