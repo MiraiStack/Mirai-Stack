@@ -15,8 +15,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Mirai Stack",
-    description: "Mirai Stack designs and engineers scalable SaaS platforms, automation systems, and digital infrastructure built for the next generation of organizations.",
+    title: "Mirai Stack — Software Engineering & Architecture Studio",
+    description: "We engineer scalable websites, platforms, and automation systems—built with clean architecture, modern UI, and production-grade delivery.",
+    metadataBase: new URL("https://miraistack.co.za"),
+    alternates: {
+        canonical: "/",
+    },
+    openGraph: {
+        title: "Mirai Stack — Software Engineering & Architecture Studio",
+        description: "We engineer scalable websites, platforms, and automation systems—built with clean architecture, modern UI, and production-grade delivery.",
+        url: "https://miraistack.co.za",
+        siteName: "Mirai Stack",
+        images: [
+            {
+                url: "/og.png",
+                width: 1200,
+                height: 630,
+                alt: "Mirai Stack",
+            },
+        ],
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Mirai Stack — Software Engineering & Architecture Studio",
+        description: "We engineer scalable websites, platforms, and automation systems—built with clean architecture, modern UI, and production-grade delivery.",
+        images: ["/og.png"],
+    },
 };
 
 export default function RootLayout({
