@@ -29,7 +29,7 @@ const team: TeamMember[] = [
         name: "Masibonge Mdlalose",
         role: "Co-Founder | Director of Engineering & Systems Architecture",
         bio: "Masibonge leads engineering execution and technical architecture at Mirai Stack. He oversees platform engineering, infrastructure design, performance optimization, and system reliability, ensuring that every product is built on a strong and scalable technical foundation.\n\nWith a focus on clean architecture and long-term system stability, he designs the backend infrastructure and core technologies that power Mirai Stack’s platforms. His approach combines strong technical discipline with product-focused thinking, enabling the company to build digital platforms that are secure, efficient, and built to scale.",
-        image: "/masibonge-new.png",
+        image: "/masibonge-new.jpg",
     },
 ];
 
