@@ -36,7 +36,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <TiltCard className="perspective-[800px] shrink-0 inline-block">
                     <Link href="/" className="text-xl font-bold tracking-tight text-white flex items-center gap-3 group w-full h-full">
-                        <div className="w-8 h-8 rounded-full overflow-hidden relative border border-brand-cyan/20 shadow-[0_0_15px_rgba(68,207,213,0.3)] group-hover:shadow-[0_0_25px_rgba(68,207,213,0.5)] transition-shadow">
+                        <div className="w-8 h-8 rounded-md overflow-hidden relative border border-brand-cyan/20 shadow-[0_0_15px_rgba(68,207,213,0.3)] group-hover:shadow-[0_0_25px_rgba(68,207,213,0.5)] transition-shadow">
                             <Image
                                 src="/logo.png"
                                 alt="Mirai Stack Logo"
