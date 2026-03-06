@@ -7,17 +7,18 @@ interface TiltCardProps {
     children: React.ReactNode;
     className?: string;
     onClick?: () => void;
+    tiltIntensity?: number;
 }
 
-export default function TiltCard({ children, className = "", onClick }: TiltCardProps) {
+export default function TiltCard({ children, className = "", onClick, tiltIntensity = 10 }: TiltCardProps) {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
     const mouseXSpring = useSpring(x);
     const mouseYSpring = useSpring(y);
 
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [`${tiltIntensity}deg`, `-${tiltIntensity}deg`]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [`-${tiltIntensity}deg`, `${tiltIntensity}deg`]);
 
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();

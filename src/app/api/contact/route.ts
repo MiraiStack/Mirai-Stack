@@ -94,7 +94,14 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true, message: "Email sent successfully!" });
     } catch (error) {
         console.error("API Error:", error);
-        Sentry.captureException(error);
+
+        Sentry.withScope((scope) => {
+            scope.setTag("route", "/api/contact");
+            scope.setExtra("ip", request.headers.get("x-forwarded-for") || "unknown_ip");
+            scope.setExtra("method", request.method);
+            Sentry.captureException(error);
+        });
+
         return NextResponse.json(
             { success: false, error: "An unexpected error occurred." },
             { status: 500 }

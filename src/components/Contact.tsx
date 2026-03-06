@@ -182,7 +182,10 @@ export default function Contact() {
 
                     {/* Right: Form */}
                     <div className="lg:w-7/12 perspective-[1000px]">
-                        <TiltCard className="p-[1px] rounded-[2.5rem] bg-gradient-to-br from-brand-border/80 via-transparent to-brand-border/30 h-full overflow-hidden shadow-2xl shadow-black/80">
+                        <TiltCard
+                            tiltIntensity={5}
+                            className="p-[1px] rounded-[2.5rem] bg-gradient-to-br from-brand-border/80 via-transparent to-brand-border/30 h-full overflow-hidden shadow-2xl shadow-black/80"
+                        >
                             <form
                                 onSubmit={handleSubmit}
                                 className="relative flex flex-col gap-6 bg-brand-surface/95 backdrop-blur-3xl p-10 md:p-14 rounded-[2.5rem] h-full overflow-hidden"
