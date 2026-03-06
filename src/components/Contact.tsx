@@ -1,19 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Github, Mail, MapPin, ArrowRight } from "lucide-react";
 import TiltCard from "./TiltCard";
 
 type ApiResponse =
     | { success: true; message?: string }
-    | { success: false; error?: string; code?: string };
+    | { success: false; error?: string };
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const safeParseJson = async (res: Response): Promise<ApiResponse | null> => {
+    // Prevent “late response overwrites UI” (race condition protection)
+    const requestIdRef = useRef(0);
+
+    const safeReadJson = async (res: Response): Promise<ApiResponse | null> => {
         try {
             const text = await res.text();
             if (!text) return null;
@@ -26,6 +29,8 @@ export default function Contact() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isSubmitting) return;
+
+        const currentRequestId = ++requestIdRef.current;
 
         setIsSubmitting(true);
         setStatus("idle");
@@ -49,48 +54,55 @@ export default function Contact() {
                 body: JSON.stringify(payload),
             });
 
-            const data = await safeParseJson(res);
+            const data = await safeReadJson(res);
 
-            // ✅ Explicit rate-limit UX
+            // If another submit started after this one, ignore this response
+            if (currentRequestId !== requestIdRef.current) return;
+
+            // ✅ 429: explicit friendly rate-limit message
             if (res.status === 429) {
                 setStatus("error");
                 setErrorMessage(
-                    (data && !data.success ? data.error : null) ||
-                    "You’ve sent too many requests in a short time. Please wait a moment and try again."
+                    (data && data.success === false ? data.error : null) ||
+                    "Too many requests right now. Please wait a minute and try again."
                 );
                 return;
             }
 
-            // ✅ True success contract
+            // ✅ Success: HTTP ok AND data.success === true
             if (res.ok && data?.success === true) {
                 setStatus("success");
                 form.reset();
                 return;
             }
 
-            // ✅ Prevent false “generic error” when API succeeded but returned no JSON / different shape
+            // ✅ Safety: If server returned ok but response body isn't JSON, don't show a false failure
+            // (Prevents “Something went wrong” when Network says 200)
             if (res.ok && !data) {
                 setStatus("success");
                 form.reset();
                 return;
             }
 
-            // ❌ Handle server-provided error messaging
-            const serverError =
-                data && "success" in data && data.success === false ? data.error : undefined;
-
-            setStatus("error");
-            setErrorMessage(
-                serverError ||
+            // ❌ Error: prefer server message, else fallback
+            const message =
+                (data && data.success === false ? data.error : null) ||
                 (!res.ok
                     ? `Request failed (${res.status}). Please try again in a moment.`
-                    : "Something went wrong. Please try again in a moment.")
-            );
+                    : "Something went wrong. Please try again in a moment.");
+
+            setStatus("error");
+            setErrorMessage(message);
         } catch {
+            // If another submit started after this one, ignore this error
+            if (currentRequestId !== requestIdRef.current) return;
+
             setStatus("error");
             setErrorMessage("Something went wrong. Please try again in a moment.");
         } finally {
-            setIsSubmitting(false);
+            if (currentRequestId === requestIdRef.current) {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -115,8 +127,8 @@ export default function Contact() {
                                 <span className="text-neutral-500">the future.</span>
                             </h2>
                             <p className="text-xl text-neutral-400 max-w-md mb-12 leading-relaxed">
-                                Whether you need a highly scalable SaaS platform, complex automation, or a dedicated
-                                engineering partner, our team is ready to deliver.
+                                Whether you need a highly scalable SaaS platform, complex automation,
+                                or a dedicated engineering partner, our team is ready to deliver.
                             </p>
                         </div>
 
@@ -184,6 +196,7 @@ export default function Contact() {
                                     autoComplete="off"
                                 />
 
+                                {/* Soft glow behind form */}
                                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
                                 <h3 className="text-3xl font-bold tracking-tight text-white mb-2 relative z-10">
@@ -206,7 +219,7 @@ export default function Contact() {
                                             id="name"
                                             name="name"
                                             required
-                                            placeholder="Bear RSA"
+                                            placeholder="Bear McCoy"
                                             className="w-full bg-brand-dark/50 border border-brand-border rounded-xl px-5 py-4 text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
                                         />
                                     </div>
