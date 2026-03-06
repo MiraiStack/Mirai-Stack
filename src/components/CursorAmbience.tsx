@@ -16,13 +16,10 @@ export default function CursorAmbience() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        // Desktop only and respect reduced motion check
         const isTouch = window.matchMedia("(pointer: coarse)").matches;
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         if (isTouch || prefersReducedMotion) return;
-
-        setIsVisible(true);
 
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -30,15 +27,26 @@ export default function CursorAmbience() {
         const ctx = canvas.getContext("2d", { alpha: true });
         if (!ctx) return;
 
+        setIsVisible(true);
+
         let width = window.innerWidth;
         let height = window.innerHeight;
+        let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
         const setSize = () => {
             width = window.innerWidth;
             height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
         };
+
         setSize();
         window.addEventListener("resize", setSize);
 
@@ -48,21 +56,17 @@ export default function CursorAmbience() {
         let currentY = mouseY;
         let lastX = mouseX;
         let lastY = mouseY;
+        let hasMouseMoved = false;
 
         const trail: TrailParticle[] = [];
 
         const handleMouseMove = (e: MouseEvent) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+            hasMouseMoved = true;
         };
 
         window.addEventListener("mousemove", handleMouseMove);
-
-        // Hide effect when cursor leaves the window
-        const handleMouseLeave = () => {
-            // We could abruptly fade, but smoothly tracking to leaving point works.
-        };
-        window.addEventListener("mouseout", handleMouseLeave);
 
         let animationFrameId: number;
 
@@ -72,14 +76,10 @@ export default function CursorAmbience() {
             radius: number,
             opacity: number
         ) => {
-            // Draw a highly blurred radial gradient
             const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-            // Soft white at center
             grad.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
-            // Very subtle cyan midpoint
-            grad.addColorStop(0.4, `rgba(180, 240, 255, ${opacity * 0.4})`);
-            // Fade to transparent
-            grad.addColorStop(1, `rgba(180, 240, 255, 0)`);
+            grad.addColorStop(0.35, `rgba(210, 245, 255, ${opacity * 0.45})`);
+            grad.addColorStop(1, `rgba(210, 245, 255, 0)`);
 
             ctx.fillStyle = grad;
             ctx.beginPath();
@@ -90,52 +90,53 @@ export default function CursorAmbience() {
         const render = () => {
             ctx.clearRect(0, 0, width, height);
 
-            // Smoothly lerp towards mouse position
-            currentX += (mouseX - currentX) * 0.12;
-            currentY += (mouseY - currentY) * 0.12;
+            if (hasMouseMoved) {
+                currentX += (mouseX - currentX) * 0.14;
+                currentY += (mouseY - currentY) * 0.14;
+            }
 
             const dx = currentX - lastX;
             const dy = currentY - lastY;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
-            // Emit mist vapor trail if moving past threshold
-            if (dist > 1.5) {
+            // Mist trail only when movement is meaningfully fast
+            if (hasMouseMoved && dist > 4) {
                 trail.push({
                     x: currentX,
                     y: currentY,
-                    life: 1, // Life degrades from 1.0 to 0
-                    size: Math.random() * 40 + 60, // Large soft blobs
-                    vx: dx * 0.05 + (Math.random() - 0.5) * 0.5, // Slow independent drift
-                    vy: dy * 0.05 + (Math.random() - 0.5) * 0.5,
+                    life: 1,
+                    size: Math.random() * 24 + 26,
+                    vx: dx * 0.03 + (Math.random() - 0.5) * 0.35,
+                    vy: dy * 0.03 + (Math.random() - 0.5) * 0.35,
                 });
             }
 
-            // Optimize by limiting max particles
-            if (trail.length > 50) {
+            if (trail.length > 24) {
                 trail.shift();
             }
 
             lastX = currentX;
             lastY = currentY;
 
-            // Draw vapor trail
             for (let i = trail.length - 1; i >= 0; i--) {
                 const p = trail[i];
-                p.life -= 0.02; // Fast fade-out
+                p.life -= 0.035;
                 p.x += p.vx;
                 p.y += p.vy;
 
                 if (p.life <= 0) {
                     trail.splice(i, 1);
                 } else {
-                    // Maximum opacity is very low (0.015)
-                    drawRadialGradient(p.x, p.y, p.size, p.life * 0.015);
+                    drawRadialGradient(p.x, p.y, p.size, p.life * 0.045);
                 }
             }
 
-            // Draw central gentle ambient glow over cursor
-            // Very large radius, extremely dim opacity (0.035)
-            drawRadialGradient(currentX, currentY, 300, 0.035);
+            if (hasMouseMoved) {
+                // Outer ambient halo
+                drawRadialGradient(currentX, currentY, 170, 0.09);
+                // Inner brighter center
+                drawRadialGradient(currentX, currentY, 70, 0.06);
+            }
 
             animationFrameId = requestAnimationFrame(render);
         };
@@ -145,7 +146,6 @@ export default function CursorAmbience() {
         return () => {
             window.removeEventListener("resize", setSize);
             window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseout", handleMouseLeave);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);
@@ -157,7 +157,9 @@ export default function CursorAmbience() {
             ref={canvasRef}
             aria-hidden="true"
             className="pointer-events-none fixed inset-0 z-[100] h-full w-full"
-            style={{ mixBlendMode: "screen" }}
+            style={{
+                mixBlendMode: "screen",
+            }}
         />
     );
 }
