@@ -1,13 +1,10 @@
 "use client";
 
 import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export default function Privacy() {
     return (
         <div className="bg-brand-dark min-h-screen">
-            <Navbar />
 
             <main className="max-w-4xl mx-auto px-6 py-32 text-neutral-300">
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-12 border-b border-brand-border pb-8">Privacy Policy</h1>
@@ -560,12 +557,10 @@ export default function Privacy() {
                         22.4 We cooperate fully with the Information Regulator in the investigation and resolution of complaints.</p>
                     <p className="mb-4 text-neutral-300 leading-relaxed">ACKNOWLEDGMENT<br />
                         BY USING MIRAI STACK PLATFORMS AND SERVICES, YOU ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTOOD THIS PRIVACY POLICY AND CONSENT TO THE PROCESSING OF YOUR PERSONAL INFORMATION AS DESCRIBED HEREIN.<br />
-                        Last Updated: 04 March 2026</p>
+                        Last Updated: March 2026</p>
                     <p className="mb-4 text-neutral-300 leading-relaxed">© 2026 Mirai Stack (Pty) Ltd. All rights reserved.</p>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }

@@ -1,13 +1,10 @@
 "use client";
 
 import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export default function Terms() {
     return (
         <div className="bg-brand-dark min-h-screen">
-            <Navbar />
 
             <main className="max-w-4xl mx-auto px-6 py-32 text-neutral-300">
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-12 border-b border-brand-border pb-8">Terms and Conditions</h1>
@@ -496,13 +493,11 @@ export default function Terms() {
                     <hr className="my-12 border-brand-border" />
                     <p className="mb-4 text-neutral-300 leading-relaxed"><strong>ACKNOWLEDGMENT</strong></p>
                     <p className="mb-4 text-neutral-300 leading-relaxed">BY ACCESSING OR USING ANY MIRAI STACK PLATFORM OR SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS AND CONDITIONS.</p>
-                    <p className="mb-4 text-neutral-300 leading-relaxed"><strong>Last Updated: 04 March 2026</strong></p>
+                    <p className="mb-4 text-neutral-300 leading-relaxed"><strong>Last Updated: March 2026</strong></p>
                     <hr className="my-12 border-brand-border" />
                     <p className="mb-4 text-neutral-300 leading-relaxed"><em>© 2026 Mirai Stack (Pty) Ltd. All rights reserved.</em></p>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }
