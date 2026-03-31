@@ -16,12 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Mirai Stack — Software Engineering & Architecture Studio",
+    title: {
+        default: "Mirai Stack — Software Engineering & Architecture Studio",
+        template: "%s | Mirai Stack",
+    },
     description: "We engineer scalable websites, platforms, and automation systems—built with clean architecture, modern UI, and production-grade delivery.",
     metadataBase: new URL("https://miraistack.co.za"),
-    alternates: {
-        canonical: "/",
-    },
     openGraph: {
         title: "Mirai Stack — Software Engineering & Architecture Studio",
         description: "We engineer scalable websites, platforms, and automation systems—built with clean architecture, modern UI, and production-grade delivery.",
