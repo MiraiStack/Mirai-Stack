@@ -4,7 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export function TermsClient() {
+export default function Terms() {
     return (
         <div className="bg-brand-dark min-h-screen">
             <Navbar />

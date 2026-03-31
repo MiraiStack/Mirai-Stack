@@ -4,7 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export function PrivacyClient() {
+export default function Privacy() {
     return (
         <div className="bg-brand-dark min-h-screen">
             <Navbar />
