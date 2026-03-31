@@ -45,6 +45,16 @@ export const metadata: Metadata = {
     },
 };
 
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Mirai Stack",
+    url: "https://miraistack.co.za",
+    logo: "https://miraistack.co.za/logo.png",
+    description:
+        "Software Engineering & Architecture Studio building scalable websites, platforms, and automation systems.",
+};
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -55,6 +65,10 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+                />
                 <CursorAmbience />
                 <Navbar />
                 {children}
