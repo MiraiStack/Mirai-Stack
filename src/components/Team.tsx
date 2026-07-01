@@ -207,7 +207,7 @@ export default function Team() {
 
                                 <div className="flex items-center gap-4 mt-auto">
                                     <a
-                                        href={`mailto:info@miraistack.co.za`}
+                                        href={`mailto:partnerships@miraistack.co.za`}
                                         className="w-12 h-12 rounded-full border border-brand-border flex items-center justify-center text-neutral-400 hover:text-brand-dark hover:bg-brand-cyan hover:border-brand-cyan transition-all"
                                     >
                                         <Mail size={20} />
