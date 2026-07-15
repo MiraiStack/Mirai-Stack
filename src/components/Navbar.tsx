@@ -20,10 +20,10 @@ export default function Navbar() {
     }, []);
 
     const navLinks = [
-        { name: "Services", href: "#services" },
-        { name: "Projects", href: "#projects" },
-        { name: "Process", href: "#process" },
-        { name: "About", href: "#about" },
+        { name: "Services", href: "/#services" },
+        { name: "Projects", href: "/#projects" },
+        { name: "Process", href: "/#process" },
+        { name: "About", href: "/#about" },
     ];
 
     return (
@@ -36,12 +36,14 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <TiltCard className="perspective-[800px] shrink-0 inline-block">
                     <Link href="/" className="text-xl font-bold tracking-tight text-white flex items-center gap-3 group w-full h-full">
-                        <div className="w-8 h-8 rounded-md overflow-hidden relative border border-brand-cyan/20 shadow-[0_0_15px_rgba(68,207,213,0.3)] group-hover:shadow-[0_0_25px_rgba(68,207,213,0.5)] transition-shadow">
+                        <div className="h-8 relative flex items-center justify-center rounded-md overflow-hidden border border-brand-cyan/20 shadow-[0_0_15px_rgba(68,207,213,0.3)] group-hover:shadow-[0_0_25px_rgba(68,207,213,0.5)] transition-shadow">
                             <Image
-                                src="/logo.png"
+                                src="/logo.jpg"
                                 alt="Mirai Stack Logo"
-                                fill
-                                className="object-cover bg-white"
+                                width={160}
+                                height={40}
+                                className="h-full w-auto object-contain"
+                                priority
                             />
                         </div>
                         Mirai Stack
@@ -61,7 +63,7 @@ export default function Navbar() {
                     ))}
                     <TiltCard className="perspective-[800px] shrink-0 inline-block">
                         <Link
-                            href="#contact"
+                            href="/#contact"
                             className="px-6 py-2.5 text-sm font-medium bg-brand-cyan text-brand-dark rounded-full hover:bg-white hover:text-black transition-all shadow-lg hover:shadow-brand-cyan/20 block"
                         >
                             Contact
@@ -98,7 +100,7 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <Link
-                            href="#contact"
+                            href="/#contact"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="mt-2 w-full text-center px-4 py-4 text-base font-medium bg-brand-cyan text-brand-dark rounded-xl hover:bg-white transition-all"
                         >

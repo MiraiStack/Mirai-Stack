@@ -8,13 +8,13 @@ export const size = {
     width: 300,
     height: 300,
 };
-export const contentType = 'image/png';
+export const contentType = 'image/jpeg';
 
 export default async function Icon() {
-    const logoPath = path.join(process.cwd(), 'public', 'logo.png');
+    const logoPath = path.join(process.cwd(), 'public', 'logo.jpg');
     const logoData = fs.readFileSync(logoPath);
     const base64 = logoData.toString('base64');
-    const src = `data:image/png;base64,${base64}`;
+    const src = `data:image/jpeg;base64,${base64}`;
 
     return new ImageResponse(
         (

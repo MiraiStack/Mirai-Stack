@@ -30,10 +30,9 @@ export default function Hero() {
                 className="relative z-10 max-w-5xl mx-auto px-6 text-center mt-12"
             >
                 <motion.div variants={itemVariants}>
-                    <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-brand-surface border border-brand-border text-sm font-medium text-neutral-300 mb-10 backdrop-blur-md shadow-2xl hover:border-brand-cyan/50 transition-colors cursor-default">
-                        <span className="flex h-2 w-2 rounded-full bg-brand-cyan animate-pulse shadow-[0_0_10px_rgba(68,207,213,0.8)]" />
+                    <p className="text-sm font-medium text-neutral-400 mb-10">
                         Software Engineering & Systems Architecture Studio
-                    </div>
+                    </p>
                 </motion.div>
 
                 <motion.h1
@@ -56,14 +55,14 @@ export default function Hero() {
                     className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
                     <Link
-                        href="#projects"
+                        href="/#projects"
                         className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white font-medium rounded-full hover:scale-105 transition-all flex items-center justify-center gap-2 group shadow-[0_0_20px_rgba(33,138,205,0.4)] hover:shadow-[0_0_30px_rgba(33,138,205,0.6)]"
                     >
                         View Our Projects
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                     <Link
-                        href="#contact"
+                        href="/#contact"
                         className="w-full sm:w-auto px-8 py-4 bg-transparent border border-neutral-600 text-white hover:border-brand-cyan hover:text-brand-cyan font-medium rounded-full hover:scale-105 transition-all flex items-center justify-center bg-brand-surface/30 backdrop-blur-sm"
                     >
                         Start a Project

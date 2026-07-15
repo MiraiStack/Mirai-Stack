@@ -37,7 +37,7 @@ export default function CTA() {
                     transition={{ delay: 0.2 }}
                 >
                     <Link
-                        href="#contact"
+                        href="/#contact"
                         className="inline-flex items-center gap-3 px-12 py-6 bg-brand-cyan text-brand-dark hover:bg-white hover:text-black font-bold text-lg rounded-full hover:scale-105 transition-all group shadow-[0_0_30px_rgba(68,207,213,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)]"
                     >
                         Start a Project
