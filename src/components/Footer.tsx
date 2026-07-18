@@ -71,7 +71,6 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-brand-border/50 flex flex-col md:flex-row items-center justify-between gap-4 text-sm font-medium text-neutral-600">
                     <p>© {new Date().getFullYear()} Mirai Stack. All rights reserved.</p>
-                    <p>Designed & Engineered in South Africa</p>
                 </div>
             </div>
         </footer>
